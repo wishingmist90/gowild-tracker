@@ -1,0 +1,8 @@
+__pycache__/
+# personal / runtime data (each person builds their own)
+data/gowild.db*
+data/cookies.json
+data/watch.json
+data/markets.json
+data/schedules.json
+probe_then_scan.py

@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GoWild Tracker</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+:root{
+  --bg:#f6f7f5; --panel:#ffffff; --ink:#17201b; --muted:#66706a; --line:#e3e7e3;
+  --green:#0f7a46; --green-soft:#e3f3ea; --amber:#a35d00; --amber-soft:#fdf0dc;
+  --red:#b3261e; --gray:#a3aba6; --accent:#0f7a46;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
+  font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.app{display:grid;grid-template-columns:420px 1fr;height:100vh}
+aside{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+#map{height:100%;width:100%}
+header{padding:16px 18px 10px;border-bottom:1px solid var(--line)}
+h1{font-size:18px;margin:0 0 2px;letter-spacing:-.01em}
+.sub{color:var(--muted);font-size:12px}
+.controls{padding:12px 18px;border-bottom:1px solid var(--line);display:grid;gap:10px}
+label.small{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+select,input[type=text]{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff;color:var(--ink)}
+.days{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
+.day{flex:0 0 auto;border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 9px;cursor:pointer;text-align:left;font:inherit;color:var(--ink)}
+.day b{display:block;font-size:13px}
+.day span{font-size:11px;color:var(--muted)}
+.day.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:var(--green-soft)}
+.day.blackout{opacity:.55}
+.row{display:flex;gap:8px;align-items:center}
+button.primary{flex:1;background:var(--accent);color:#fff;border:0;border-radius:8px;padding:9px 12px;font:inherit;font-weight:600;cursor:pointer}
+button.primary:disabled{opacity:.6;cursor:default}
+button.ghost{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit;cursor:pointer;color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);cursor:pointer;user-select:none}
+.progress{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent);width:0;transition:width .4s}
+.note{font-size:12px;color:var(--muted)}
+.warn{background:var(--amber-soft);color:var(--amber);border-radius:8px;padding:8px 10px;font-size:12px}
+.filters{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.list{overflow-y:auto;flex:1;min-height:0}
+.stat{padding:10px 18px;font-size:13px;color:var(--muted);border-bottom:1px solid var(--line)}
+.stat b{color:var(--ink)}
+.dest{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:10px 18px;border-bottom:1px solid var(--line);cursor:pointer}
+.dest:hover{background:#fafbfa}
+.dest .name{font-weight:600}
+.dest .meta{font-size:12px;color:var(--muted)}
+.price{font-weight:700;font-variant-numeric:tabular-nums;text-align:right}
+.price.open{color:var(--green)}
+.badge{display:inline-block;font-size:11px;padding:1px 6px;border-radius:999px;background:var(--line);color:var(--muted);margin-left:4px;font-weight:600}
+.badge.seats{background:var(--amber-soft);color:var(--amber)}
+.badge.non{background:var(--green-soft);color:var(--green)}
+.dest.none .name,.dest.none .price{color:var(--gray);font-weight:500}
+.detail{padding:14px 18px;display:none}
+.detail h2{margin:4px 0 2px;font-size:17px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;padding:6px 4px;border-bottom:1px solid var(--line)}
+td{padding:7px 4px;border-bottom:1px solid var(--line);vertical-align:top}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+tr.closed td{color:var(--gray)}
+.track{font-size:11px;color:var(--muted)}
+a{color:var(--accent)}
+.section{margin-top:16px}
+.section h3{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 4px}
+.legend{position:absolute;bottom:18px;right:18px;z-index:500;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.legend div{display:flex;align-items:center;gap:6px;margin:2px 0}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.mapwrap{position:relative;min-height:0}
+.pricetag{background:var(--green);color:#fff;font-weight:700;font-size:11px;padding:1px 5px;border-radius:6px;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.leaflet-tooltip.plain{background:#fff;border:1px solid var(--line);box-shadow:0 2px 6px rgba(0,0,0,.12);font:12px system-ui}
+@media (max-width:820px){
+  .app{grid-template-columns:1fr;grid-template-rows:55vh 45vh}
+  aside{order:2;border-right:0;border-top:1px solid var(--line)}
+  .mapwrap{order:1}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <header>
+      <h1>GoWild Tracker</h1>
+      <div class="sub" id="fresh">Live from flyfrontier.com</div>
+    </header>
+    <div class="controls">
+      <div>
+        <label class="small" for="origin">From</label>
+        <select id="origin"></select>
+      </div>
+      <div>
+        <label class="small">Date</label>
+        <div class="days" id="days"></div>
+      </div>
+      <div class="row">
+        <button class="primary" id="scan">Check flights</button>
+        <label class="toggle" title="Re-check tomorrow's flights from this airport every 2 hours while the app is running, to build seat history"><input type="checkbox" id="watch"> Auto-track</label>
+      </div>
+      <div id="jobbox" style="display:none">
+        <div class="progress"><i id="bar"></i></div>
+        <div class="note" id="jobtext"></div>
+      </div>
+      <div id="daynote"></div>
+      <div class="filters">
+        <label class="toggle"><input type="checkbox" id="nonstop"> Nonstop only</label>
+        <label class="toggle"><input type="checkbox" id="openonly" checked> GoWild only</label>
+        <label class="toggle">Max $<input type="text" id="maxp" placeholder="any" style="width:56px;padding:3px 6px"></label>
+      </div>
+    </div>
+    <div class="stat" id="stat">Pick an airport and a date, then Check flights.</div>
+    <div class="list" id="list"></div>
+    <div class="list detail" id="detail"></div>
+  </aside>
+  <div class="mapwrap">
+    <div id="map"></div>
+    <div class="legend">
+      <div><span class="dot" style="background:var(--green)"></span>GoWild seats open</div>
+      <div><span class="dot" style="background:#c9cfcb"></span>Checked, none open</div>
+      <div><span class="dot" style="border:2px solid #9aa39d;width:9px;height:9px"></span>Route not checked yet</div>
+    </div>
+  </div>
+</div>
+<script>
+const $ = s => document.querySelector(s);
+const state = {meta:null, stations:{}, origin:null, day:null, results:null, selected:null, jobId:null, layers:[]};
+const fmtMoney = v => v==null ? "" : "$" + v.toFixed(2);
+const fmtTime = iso => new Date(iso).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
+const fmtDay = iso => new Date(iso + "T12:00:00").toLocaleDateString([], {weekday:"short", month:"short", day:"numeric"});
+const fmtStamp = iso => {
+  if(!iso) return "";
+  const d = new Date(iso), now = new Date();
+  const t = d.toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
+  return d.toDateString() === now.toDateString() ? t : d.toLocaleDateString([], {month:"short", day:"numeric"}) + " " + t;
+};
+const ago = iso => { const m = Math.round((Date.now() - new Date(iso)) / 60000); return m < 1 ? "just now" : m < 60 ? m + " min ago" : Math.round(m/60) + " h ago"; };
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+const map = L.map("map", {zoomControl:true, worldCopyJump:true}).setView([30, -95], 4);
+const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/";
+L.tileLayer(ESRI + "World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+  attribution: "Tiles &copy; Esri &mdash; Esri, HERE, Garmin, OpenStreetMap contributors", maxZoom: 16}).addTo(map);
+L.tileLayer(ESRI + "World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}", {maxZoom: 16}).addTo(map);
+const layer = L.layerGroup().addTo(map);
+
+async function api(path, body){
+  const r = await fetch(path, body ? {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)} : {});
+  const j = await r.json();
+  if(!r.ok) throw new Error(j.error || r.statusText);
+  return j;
+}
+
+function frontierUrl(o, d, day){
+  const dd = new Date(day + "T12:00:00").toLocaleDateString("en-US", {month:"short", day:"2-digit", year:"numeric"});
+  return "https://booking.flyfrontier.com/Flight/InternalSelect?" + new URLSearchParams({o1:o, d1:d, dd1:dd, ADT:1, mon:"true", promo:""});
+}
+
+async function init(){
+  state.meta = await api("/api/meta");
+  for(const s of state.meta.stations) state.stations[s.code] = s;
+  const sel = $("#origin");
+  const groups = {};
+  const mine = state.meta.watch.origins.filter(c => state.stations[c]);
+  if(mine.length){
+    const og = document.createElement("optgroup"); og.label = "Tracked airports";
+    for(const c of mine){ const s = state.stations[c]; const o = document.createElement("option"); o.value = c; o.textContent = s.label + (s.state ? ", " + s.state : ""); og.appendChild(o); }
+    sel.appendChild(og);
+  }
+  for(const s of state.meta.stations){ if(!mine.includes(s.code)) (groups[s.countryName] ||= []).push(s); }
+  const order = Object.keys(groups).sort((a,b) => (b.startsWith("United States")) - (a.startsWith("United States")) || a.localeCompare(b));
+  for(const g of order){
+    const og = document.createElement("optgroup"); og.label = g;
+    for(const s of groups[g]){ const o = document.createElement("option"); o.value = s.code; o.textContent = s.label + (s.state ? ", " + s.state : ""); og.appendChild(o); }
+    sel.appendChild(og);
+  }
+  const saved = (() => { try { return localStorage.getItem("gw.origin"); } catch(e) { return null; } })();
+  state.origin = saved && state.stations[saved] ? saved : (state.meta.watch.origins[0] || "DEN");
+  sel.value = state.origin;
+  state.day = state.meta.days[1].date;  // tomorrow
+  $("#fresh").textContent = "Live from flyfrontier.com · route list updated " + fmtStamp(state.meta.markets_fetched_at);
+  renderDays();
+  sel.onchange = () => { state.origin = sel.value; try{localStorage.setItem("gw.origin", sel.value);}catch(e){}; state.selected = null; load(); };
+  $("#scan").onclick = scan;
+  $("#watch").onchange = async e => { state.meta.watch = await api("/api/watch", {origin: state.origin, on: e.target.checked}); };
+  for(const id of ["#nonstop", "#openonly"]) $(id).onchange = render;
+  $("#maxp").oninput = render;
+  await load();
+  pollJobs();
+}
+
+function renderDays(){
+  const box = $("#days"); box.innerHTML = "";
+  for(const d of state.meta.days){
+    const b = document.createElement("button");
+    b.className = "day" + (d.date === state.day ? " on" : "") + (d.blackout ? " blackout" : "");
+    const tag = d.blackout ? "blackout" : d.domestic_open ? (d.ahead === 0 ? "today" : "tomorrow") : "intl only";
+    b.innerHTML = `<b>${fmtDay(d.date)}</b><span>${tag}</span>`;
+    b.onclick = () => { state.day = d.date; state.selected = null; renderDays(); load(); };
+    box.appendChild(b);
+  }
+}
+
+async function load(){
+  $("#watch").checked = state.meta.watch.origins.includes(state.origin);
+  state.results = await api(`/api/results?origin=${state.origin}&day=${state.day}`);
+  render();
+}
+
+function destSummary(code){
+  const r = state.results.results[code];
+  if(!r) return {code, checked:false};
+  const nonstopOnly = $("#nonstop").checked;
+  const maxp = parseFloat($("#maxp").value);
+  let open = r.flights.filter(f => f.gowild);
+  if(nonstopOnly) open = open.filter(f => f.stops === 0);
+  if(!isNaN(maxp)) open = open.filter(f => f.gowild_price <= maxp);
+  const min = open.length ? Math.min(...open.map(f => f.gowild_price)) : null;
+  const seats = open.map(f => f.gowild_seats).filter(x => x != null);
+  return {code, checked:true, r, open, min, hasNonstop: open.some(f => f.stops === 0),
+          fewSeats: seats.length ? Math.min(...seats) : null, status: r.status, error: r.last_error};
+}
+
+function render(){
+  const res = state.results; if(!res) return;
+  const o = state.stations[state.origin];
+  const dayInfo = state.meta.days.find(d => d.date === state.day);
+  // date note
+  let note = "";
+  if(res.blackout) note = `<div class="warn">${fmtDay(state.day)} is a GoWild blackout date. Frontier won't sell pass seats.</div>`;
+  else if(dayInfo && !dayInfo.domestic_open) note = `<div class="note">Domestic GoWild opens the day before departure, so only international routes are bookable for ${fmtDay(state.day)}. ${Object.keys(res.skipped).length} domestic routes not checked.</div>`;
+  $("#daynote").innerHTML = note;
+  const toCheck = res.routes.length - Object.keys(res.skipped).length;
+  $("#scan").textContent = `Check ${toCheck} route${toCheck === 1 ? "" : "s"} from ${state.origin}`;
+
+  const sums = res.routes.map(destSummary);
+  const checked = sums.filter(s => s.checked);
+  const open = sums.filter(s => s.open && s.open.length);
+  const last = checked.map(s => s.r.checked_at).sort().pop();
+  $("#stat").innerHTML = checked.length
+    ? `<b>${open.length}</b> of ${checked.length} checked destinations have GoWild seats on <b>${fmtDay(state.day)}</b>` + (last ? ` · checked ${ago(last)}` : "")
+    : `Nothing checked yet for ${fmtDay(state.day)}. Hit <b>Check</b> to pull live seats from Frontier.`;
+
+  // list
+  const showAll = !$("#openonly").checked;
+  const rows = sums.filter(s => showAll ? true : s.open && s.open.length)
+    .sort((a,b) => (b.open?.length ? 1 : 0) - (a.open?.length ? 1 : 0) || (a.min ?? 1e9) - (b.min ?? 1e9) || a.code.localeCompare(b.code));
+  const list = $("#list"); list.innerHTML = "";
+  for(const s of rows){
+    const st = state.stations[s.code] || {label: s.code};
+    const div = document.createElement("div");
+    const isOpen = s.open && s.open.length;
+    div.className = "dest" + (isOpen ? "" : " none");
+    let meta, price;
+    if(!s.checked){ meta = res.skipped[s.code] ? res.skipped[s.code] : "not checked yet"; price = ""; }
+    else if(s.status === "no_service"){ meta = "no Frontier flights this day"; price = "—"; }
+    else if(s.status === "error"){ meta = "couldn't read Frontier: " + esc(s.error?.error || ""); price = "?"; }
+    else if(isOpen){
+      meta = `${s.open.length} GoWild flight${s.open.length>1?"s":""}` + (s.hasNonstop ? `<span class="badge non">nonstop</span>` : "") +
+        (s.fewSeats != null ? `<span class="badge seats">${s.fewSeats} seat${s.fewSeats>1?"s":""} left</span>` : "");
+      price = fmtMoney(s.min);
+    } else { meta = `${s.r.n_flights} flight${s.r.n_flights===1?"":"s"}, no GoWild seats`; price = "none"; }
+    div.innerHTML = `<div class="name">${esc(st.label)}</div><div class="price ${isOpen?"open":""}">${price}</div><div class="meta">${meta}</div><div></div>`;
+    div.onclick = () => select(s.code);
+    list.appendChild(div);
+  }
+  if(!rows.length && checked.length) list.innerHTML = `<div class="stat">No destinations match. Untick "GoWild only" to see everything.</div>`;
+
+  drawMap(o, sums);
+  if(state.selected) showDetail(state.selected);
+}
+
+function drawMap(o, sums){
+  layer.clearLayers();
+  if(!o) return;
+  const pts = [[o.lat, o.lon]];
+  for(const s of sums){
+    const st = state.stations[s.code]; if(!st) continue;
+    const isOpen = s.open && s.open.length;
+    pts.push([st.lat, st.lon]);
+    if(isOpen) L.polyline([[o.lat,o.lon],[st.lat,st.lon]], {color:"#0f7a46", weight:1.5, opacity:.45}).addTo(layer);
+    const m = L.circleMarker([st.lat, st.lon], isOpen
+      ? {radius:7, color:"#fff", weight:2, fillColor:"#0f7a46", fillOpacity:1}
+      : s.checked ? {radius:4, color:"#c9cfcb", weight:1, fillColor:"#c9cfcb", fillOpacity:1}
+                  : {radius:4, color:"#9aa39d", weight:1.5, fillColor:"#fff", fillOpacity:1}).addTo(layer);
+    const tip = isOpen ? `<b>${esc(st.label)}</b><br>GoWild from ${fmtMoney(s.min)} · ${s.open.length} flight${s.open.length>1?"s":""}`
+      : `<b>${esc(st.label)}</b><br>${s.checked ? (s.status === "no_service" ? "no flights this day" : "no GoWild seats") : "not checked"}`;
+    m.bindTooltip(tip, {className:"plain"});
+    m.on("click", () => select(s.code));
+    if(isOpen) L.marker([st.lat, st.lon], {icon: L.divIcon({className:"", html:`<span class="pricetag">${s.code} $${Math.round(s.min)}</span>`, iconAnchor:[-8, 22]}), interactive:false}).addTo(layer);
+  }
+  L.circleMarker([o.lat, o.lon], {radius:9, color:"#fff", weight:3, fillColor:"#17201b", fillOpacity:1}).bindTooltip(`<b>${esc(o.label)}</b>`, {className:"plain"}).addTo(layer);
+  if(!state.fitFor || state.fitFor !== state.origin){ map.fitBounds(pts, {padding:[40,40], maxZoom:6}); state.fitFor = state.origin; }
+}
+
+function select(code){
+  state.selected = code;
+  $("#list").style.display = "none";
+  $("#detail").style.display = "block";
+  showDetail(code);
+}
+function closeDetail(){
+  state.selected = null;
+  $("#detail").style.display = "none";
+  $("#list").style.display = "block";
+}
+
+function flightRows(flights, closed){
+  const nonstopOnly = $("#nonstop").checked;
+  const fl = flights.filter(f => !nonstopOnly || f.stops === 0)
+    .sort((a,b) => (b.gowild - a.gowild) || a.depart.localeCompare(b.depart));
+  if(!fl.length) return `<div class="note">No flights listed by Frontier.</div>`;
+  let h = `<table><tr><th>Depart → Arrive</th><th>Flight</th><th class="num">GoWild</th><th class="num">Regular</th></tr>`;
+  for(const f of fl){
+    const via = f.via.length ? `via ${f.via.join(", ")}` : "nonstop";
+    const arrNext = f.depart.slice(0,10) !== f.arrive.slice(0,10) ? " <span class='badge'>+1</span>" : "";
+    let track = "";
+    if(f.gowild && f.first_open) track = `open since ${fmtStamp(f.first_open)}` + (f.price_lo !== f.price_hi ? ` · ${fmtMoney(f.price_lo)}–${fmtMoney(f.price_hi)}` : "");
+    h += `<tr class="${f.gowild ? "" : "closed"}">
+      <td><b>${fmtTime(f.depart)}</b> → ${fmtTime(f.arrive)}${arrNext}<div class="track">${esc(f.duration || "")}</div></td>
+      <td>${esc(f.flight_numbers.join(" + "))}<div class="track">${via}</div></td>
+      <td class="num">${f.gowild ? `<b style="color:var(--green)">${fmtMoney(f.gowild_price)}</b>` + (f.gowild_seats_text ? `<div><span class="badge seats">${esc(f.gowild_seats_text.replace("!",""))}</span></div>` : "") + (track ? `<div class="track">${track}</div>` : "") : "—"}</td>
+      <td class="num">${fmtMoney(f.standard_price)}</td></tr>`;
+  }
+  h += "</table>";
+  if(closed && closed.length){
+    h += `<div class="section"><h3>Seats that closed</h3>` + closed.map(c => `<div class="track">${esc(c.key.split("@")[0])} ${fmtTime(c.key.split("@")[1])} · last seen open ${fmtStamp(c.last_open)}</div>`).join("") + `</div>`;
+  }
+  return h;
+}
+
+async function showDetail(code){
+  const st = state.stations[code] || {label: code};
+  const o = state.origin, day = state.day;
+  const r = state.results.results[code];
+  const nextDays = state.meta.days.filter(d => d.date >= day).slice(0, 3);
+  let h = `<button class="ghost" onclick="closeDetail()">← All destinations</button>
+    <h2>${esc(state.stations[o].city)} → ${esc(st.label)}</h2>
+    <div class="note">${fmtDay(day)}${r ? " · checked " + fmtStamp(r.checked_at) : ""} · <a href="${frontierUrl(o, code, day)}" target="_blank" rel="noopener">Open on Frontier ↗</a></div>`;
+  if(!r) h += `<div class="section note">Not checked yet. <button class="ghost" onclick="scanOne('${o}','${code}','${day}')">Check this route</button></div>`;
+  else if(r.status === "no_service") h += `<div class="section note">Frontier has no flights on this route on ${fmtDay(day)}.</div>`;
+  else h += `<div class="section">${flightRows(r.flights, r.closed_since)}</div>`;
+  h += `<div class="section"><h3>Return ${esc(st.city || code)} → ${esc(state.stations[o].city)}</h3>
+    <div class="row" style="flex-wrap:wrap">${nextDays.map(d => `<button class="ghost" onclick="loadReturn('${code}','${o}','${d.date}', true)">${fmtDay(d.date)}</button>`).join("")}</div>
+    <div id="ret" class="section"></div></div>
+    <div class="section"><h3>Check history</h3><div id="hist" class="track">loading…</div></div>`;
+  $("#detail").innerHTML = h;
+  const hist = await api(`/api/history?origin=${o}&dest=${code}&day=${day}`);
+  $("#hist").innerHTML = hist.length ? hist.slice(-12).reverse().map(x =>
+    `<div>${fmtStamp(x.checked_at)} · ${x.status === "ok" ? (x.n_gowild ? `${x.n_gowild} GoWild, from ${fmtMoney(x.min_gowild)}` : "no GoWild seats") : x.status === "no_service" ? "no service" : "error: " + esc(x.error)}</div>`).join("") : "No checks yet.";
+}
+
+async function loadReturn(from, to, day, scanIfMissing){
+  const box = $("#ret"); if(!box) return;
+  const res = await api(`/api/results?origin=${from}&day=${day}`);
+  const r = res.results[to];
+  if(!r && scanIfMissing){
+    box.innerHTML = `<div class="note">Checking ${from} → ${to} on ${fmtDay(day)}…</div>`;
+    const j = await api("/api/scan", {origin: from, day, dests: [to], label: `return ${from}→${to}`});
+    await waitJob(j.job.id);
+    return loadReturn(from, to, day, false);
+  }
+  if(!r){ box.innerHTML = `<div class="note">Couldn't check that route.</div>`; return; }
+  box.innerHTML = `<div class="note">${fmtDay(day)} · checked ${fmtStamp(r.checked_at)} · <a href="#" onclick="event.preventDefault();rescanReturn('${from}','${to}','${day}')">re-check</a> · <a href="${frontierUrl(from,to,day)}" target="_blank" rel="noopener">Open on Frontier ↗</a></div>` +
+    (r.status === "no_service" ? `<div class="note">No flights that day.</div>` : flightRows(r.flights));
+}
+async function rescanReturn(from, to, day){
+  $("#ret").innerHTML = `<div class="note">Checking…</div>`;
+  const j = await api("/api/scan", {origin: from, day, dests: [to], label: `return ${from}→${to}`});
+  await waitJob(j.job.id); loadReturn(from, to, day, false);
+}
+async function scanOne(o, d, day){
+  const j = await api("/api/scan", {origin:o, day, dests:[d]});
+  await waitJob(j.job.id); await load();
+}
+async function waitJob(id){
+  for(let i = 0; i < 120; i++){
+    const {jobs} = await api("/api/jobs");
+    const j = jobs.find(x => x.id === id);
+    if(!j || j.state === "done" || j.state === "stopped") return j;
+    await new Promise(r => setTimeout(r, 1000));
+  }
+}
+
+async function scan(){
+  $("#scan").disabled = true;
+  try{
+    const j = await api("/api/scan", {origin: state.origin, day: state.day});
+    state.jobId = j.job.id;
+  } catch(e){ alertBox(e.message); }
+  $("#scan").disabled = false;
+}
+function alertBox(msg){ $("#daynote").innerHTML = `<div class="warn">${esc(msg)}</div>`; }
+
+let lastRefresh = 0;
+async function pollJobs(){
+  try{
+    const {jobs, cooldown} = await api("/api/jobs");
+    const mine = jobs.filter(j => j.origin === state.origin && j.day === state.day && (j.state === "running" || j.state === "queued"));
+    const box = $("#jobbox");
+    if(mine.length){
+      const j = mine[0];
+      box.style.display = "block";
+      $("#bar").style.width = (j.total ? 100 * j.done / j.total : 0) + "%";
+      const left = Math.ceil((j.total - j.done) * 5.5 / 60);
+      $("#jobtext").textContent = j.state === "queued" ? "Waiting for another check to finish…" : `Checked ${j.done} of ${j.total} routes · ${j.found} with GoWild seats so far · about ${left} min left (paced so Frontier doesn't block us)`;
+      if(Date.now() - lastRefresh > 3000){ lastRefresh = Date.now(); state.results = await api(`/api/results?origin=${state.origin}&day=${state.day}`); render(); }
+      state.wasRunning = true;
+    } else {
+      const stopped = jobs.filter(j => j.origin === state.origin && j.state === "stopped").pop();
+      box.style.display = stopped ? "block" : "none";
+      if(stopped) $("#jobtext").textContent = stopped.message;
+      if(state.wasRunning){ state.wasRunning = false; await load(); }
+    }
+    if(cooldown){
+      $("#scan").disabled = true;
+      $("#scan").textContent = `Frontier paused us · retry in ${Math.ceil(cooldown/60)} min`;
+    } else if($("#scan").disabled && !state.scanning){ $("#scan").disabled = false; render(); }
+  } catch(e){}
+  setTimeout(pollJobs, 1200);
+}
+
+init().catch(e => alertBox("Couldn't start: " + e.message));
+</script>
+</body>
+</html>

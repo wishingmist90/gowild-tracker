@@ -1,0 +1,740 @@
+{
+"ATL": {
+"lat": 33.6367,
+"lon": -84.4281,
+"name": "Hartsfield Jackson Atlanta International Airport",
+"tz": null
+},
+"AUS": {
+"lat": 30.1975,
+"lon": -97.662,
+"name": "Austin Bergstrom International Airport",
+"tz": null
+},
+"BDL": {
+"lat": 41.9386,
+"lon": -72.688,
+"name": "Bradley International Airport",
+"tz": null
+},
+"BNA": {
+"lat": 36.1245,
+"lon": -86.6782,
+"name": "Nashville International Airport",
+"tz": null
+},
+"BOI": {
+"lat": 43.5644,
+"lon": -116.223,
+"name": "Boise Air Terminal/Gowen Field",
+"tz": null
+},
+"BOS": {
+"lat": 42.362,
+"lon": -71.0079,
+"name": "Boston Logan International Airport",
+"tz": null
+},
+"BUF": {
+"lat": 42.9405,
+"lon": -78.7322,
+"name": "Buffalo Niagara International Airport",
+"tz": null
+},
+"BUR": {
+"lat": 34.2028,
+"lon": -118.3581,
+"name": "Hollywood Burbank/Bob Hope Airport",
+"tz": null
+},
+"BWI": {
+"lat": 39.1754,
+"lon": -76.6683,
+"name": "Baltimore/Washington International Thurgood Marshall Airport",
+"tz": null
+},
+"CID": {
+"lat": 41.8847,
+"lon": -91.7108,
+"name": "The Eastern Iowa Airport",
+"tz": null
+},
+"CLE": {
+"lat": 41.4117,
+"lon": -81.8498,
+"name": "Cleveland Hopkins International Airport",
+"tz": null
+},
+"CLT": {
+"lat": 35.214,
+"lon": -80.9431,
+"name": "Charlotte Douglas International Airport",
+"tz": null
+},
+"CMH": {
+"lat": 39.998,
+"lon": -82.8919,
+"name": "John Glenn Columbus International Airport",
+"tz": null
+},
+"CRP": {
+"lat": 27.7704,
+"lon": -97.5012,
+"name": "Corpus Christi International Airport",
+"tz": null
+},
+"CVG": {
+"lat": 39.0488,
+"lon": -84.6678,
+"name": "Cincinnati Northern Kentucky International Airport",
+"tz": null
+},
+"DCA": {
+"lat": 38.8521,
+"lon": -77.0377,
+"name": "Ronald Reagan Washington National Airport",
+"tz": null
+},
+"DEN": {
+"lat": 39.86,
+"lon": -104.6738,
+"name": "Denver International Airport",
+"tz": null
+},
+"DFW": {
+"lat": 32.8968,
+"lon": -97.038,
+"name": "Dallas Fort Worth International Airport",
+"tz": null
+},
+"DSM": {
+"lat": 41.534,
+"lon": -93.6567,
+"name": "Des Moines International Airport",
+"tz": null
+},
+"DTW": {
+"lat": 42.2138,
+"lon": -83.3538,
+"name": "Detroit Metropolitan Wayne County Airport",
+"tz": null
+},
+"ELP": {
+"lat": 31.8099,
+"lon": -106.3756,
+"name": "El Paso International Airport",
+"tz": null
+},
+"EWR": {
+"lat": 40.6894,
+"lon": -74.1705,
+"name": "Newark Liberty International Airport",
+"tz": null
+},
+"FAR": {
+"lat": 46.9207,
+"lon": -96.8158,
+"name": "Hector International Airport",
+"tz": null
+},
+"FAT": {
+"lat": 36.7758,
+"lon": -119.718,
+"name": "Fresno Yosemite International Airport",
+"tz": null
+},
+"FLL": {
+"lat": 26.0726,
+"lon": -80.1527,
+"name": "Fort Lauderdale Hollywood International Airport",
+"tz": null
+},
+"FSD": {
+"lat": 43.5855,
+"lon": -96.7412,
+"name": "Sioux Falls Regional Airport",
+"tz": null
+},
+"GEG": {
+"lat": 47.6199,
+"lon": -117.534,
+"name": "Spokane International Airport",
+"tz": null
+},
+"GRR": {
+"lat": 42.8808,
+"lon": -85.5228,
+"name": "Gerald R. Ford International Airport",
+"tz": null
+},
+"IAD": {
+"lat": 38.9445,
+"lon": -77.4558,
+"name": "Washington Dulles International Airport",
+"tz": null
+},
+"IAH": {
+"lat": 29.9844,
+"lon": -95.3414,
+"name": "George Bush Intercontinental Airport",
+"tz": null
+},
+"IND": {
+"lat": 39.7173,
+"lon": -86.2944,
+"name": "Indianapolis International Airport",
+"tz": null
+},
+"ISP": {
+"lat": 40.7963,
+"lon": -73.1017,
+"name": "Long Island MacArthur Airport",
+"tz": null
+},
+"JAX": {
+"lat": 30.4925,
+"lon": -81.6878,
+"name": "Jacksonville International Airport",
+"tz": null
+},
+"JFK": {
+"lat": 40.6394,
+"lon": -73.7793,
+"name": "John F. Kennedy International Airport",
+"tz": null
+},
+"LAS": {
+"lat": 36.0834,
+"lon": -115.1518,
+"name": "Harry Reid International Airport",
+"tz": null
+},
+"LAX": {
+"lat": 33.9425,
+"lon": -118.408,
+"name": "Los Angeles International Airport",
+"tz": null
+},
+"LGA": {
+"lat": 40.7772,
+"lon": -73.8726,
+"name": "LaGuardia Airport",
+"tz": null
+},
+"LIT": {
+"lat": 34.7292,
+"lon": -92.2236,
+"name": "Bill & Hillary Clinton National Airport/Adams Field",
+"tz": null
+},
+"MCI": {
+"lat": 39.3017,
+"lon": -94.7139,
+"name": "Kansas City International Airport",
+"tz": null
+},
+"MCO": {
+"lat": 28.4294,
+"lon": -81.309,
+"name": "Orlando International Airport",
+"tz": null
+},
+"MDW": {
+"lat": 41.786,
+"lon": -87.7524,
+"name": "Chicago Midway International Airport",
+"tz": null
+},
+"MEM": {
+"lat": 35.0438,
+"lon": -89.9763,
+"name": "Frederick W. Smith International Airport",
+"tz": null
+},
+"MIA": {
+"lat": 25.796,
+"lon": -80.2898,
+"name": "Miami International Airport",
+"tz": null
+},
+"MKE": {
+"lat": 42.9472,
+"lon": -87.8966,
+"name": "General Mitchell International Airport",
+"tz": null
+},
+"MSN": {
+"lat": 43.1399,
+"lon": -89.3375,
+"name": "Dane County Regional Truax Field",
+"tz": null
+},
+"MSP": {
+"lat": 44.8801,
+"lon": -93.2217,
+"name": "Minneapolis\u2013Saint Paul International Airport / Wold\u2013Chamberlain Field",
+"tz": null
+},
+"MSY": {
+"lat": 29.9934,
+"lon": -90.2647,
+"name": "Louis Armstrong New Orleans International Airport",
+"tz": null
+},
+"MYR": {
+"lat": 33.6797,
+"lon": -78.9283,
+"name": "Myrtle Beach International Airport",
+"tz": null
+},
+"OAK": {
+"lat": 37.7201,
+"lon": -122.2212,
+"name": "Oakland San Francisco Bay Airport",
+"tz": null
+},
+"OKC": {
+"lat": 35.3934,
+"lon": -97.5982,
+"name": "OKC Will Rogers World Airport",
+"tz": null
+},
+"OMA": {
+"lat": 41.3032,
+"lon": -95.8941,
+"name": "Eppley Airfield",
+"tz": null
+},
+"ONT": {
+"lat": 34.056,
+"lon": -117.601,
+"name": "Ontario International Airport",
+"tz": null
+},
+"ORD": {
+"lat": 41.9786,
+"lon": -87.9048,
+"name": "Chicago O'Hare International Airport",
+"tz": null
+},
+"ORF": {
+"lat": 36.8953,
+"lon": -76.201,
+"name": "Norfolk International Airport",
+"tz": null
+},
+"DJT": {
+"lat": 26.6832,
+"lon": -80.0956,
+"name": "President Donald J. Trump International Airport",
+"tz": null
+},
+"PDX": {
+"lat": 45.5887,
+"lon": -122.598,
+"name": "Portland International Airport",
+"tz": null
+},
+"PHL": {
+"lat": 39.8719,
+"lon": -75.2411,
+"name": "Philadelphia International Airport",
+"tz": null
+},
+"PHX": {
+"lat": 33.4353,
+"lon": -112.0059,
+"name": "Phoenix Sky Harbor International Airport",
+"tz": null
+},
+"PIT": {
+"lat": 40.4915,
+"lon": -80.2329,
+"name": "Pittsburgh International Airport",
+"tz": null
+},
+"PNS": {
+"lat": 30.4727,
+"lon": -87.1866,
+"name": "Pensacola International Airport",
+"tz": null
+},
+"RDU": {
+"lat": 35.8787,
+"lon": -78.7873,
+"name": "Raleigh-Durham International Airport",
+"tz": null
+},
+"RIC": {
+"lat": 37.5052,
+"lon": -77.3197,
+"name": "Richmond International Airport",
+"tz": null
+},
+"RNO": {
+"lat": 39.4991,
+"lon": -119.768,
+"name": "Reno Tahoe International Airport",
+"tz": null
+},
+"RSW": {
+"lat": 26.5347,
+"lon": -81.7528,
+"name": "Southwest Florida International Airport",
+"tz": null
+},
+"SAN": {
+"lat": 32.7336,
+"lon": -117.19,
+"name": "San Diego International Airport",
+"tz": null
+},
+"SAT": {
+"lat": 29.5337,
+"lon": -98.4698,
+"name": "San Antonio International Airport",
+"tz": null
+},
+"SEA": {
+"lat": 47.4479,
+"lon": -122.3103,
+"name": "Seattle\u2013Tacoma International Airport",
+"tz": null
+},
+"SFO": {
+"lat": 37.6198,
+"lon": -122.3748,
+"name": "San Francisco International Airport",
+"tz": null
+},
+"SJC": {
+"lat": 37.3625,
+"lon": -121.9292,
+"name": "Mineta San Jose International Airport",
+"tz": null
+},
+"SLC": {
+"lat": 40.7889,
+"lon": -111.9799,
+"name": "Salt Lake City International Airport",
+"tz": null
+},
+"SMF": {
+"lat": 38.6954,
+"lon": -121.591,
+"name": "Sacramento International Airport",
+"tz": null
+},
+"SNA": {
+"lat": 33.6751,
+"lon": -117.8693,
+"name": "John Wayne Orange County International Airport",
+"tz": null
+},
+"SRQ": {
+"lat": 27.3946,
+"lon": -82.5544,
+"name": "Sarasota Bradenton International Airport",
+"tz": null
+},
+"STL": {
+"lat": 38.7487,
+"lon": -90.37,
+"name": "St. Louis Lambert International Airport",
+"tz": null
+},
+"SYR": {
+"lat": 43.1112,
+"lon": -76.1063,
+"name": "Syracuse Hancock International Airport",
+"tz": null
+},
+"TPA": {
+"lat": 27.9755,
+"lon": -82.5332,
+"name": "Tampa International Airport",
+"tz": null
+},
+"TTN": {
+"lat": 40.2767,
+"lon": -74.8135,
+"name": "Trenton Mercer Airport",
+"tz": null
+},
+"TUL": {
+"lat": 36.1971,
+"lon": -95.8862,
+"name": "Tulsa International Airport",
+"tz": null
+},
+"TYS": {
+"lat": 35.811,
+"lon": -83.994,
+"name": "McGhee Tyson Airport",
+"tz": null
+},
+"XNA": {
+"lat": 36.2819,
+"lon": -94.3068,
+"name": "Northwest Arkansas National Airport",
+"tz": null
+},
+"PUJ": {
+"lat": 18.5671,
+"lon": -68.3646,
+"name": "Punta Cana International Airport",
+"tz": null
+},
+"SDQ": {
+"lat": 18.4297,
+"lon": -69.6689,
+"name": "Las Am\u00e9ricas International Airport",
+"tz": null
+},
+"STI": {
+"lat": 19.4041,
+"lon": -70.6044,
+"name": "Cibao International Airport",
+"tz": null
+},
+"GUA": {
+"lat": 14.5829,
+"lon": -90.5275,
+"name": "La Aurora International Airport",
+"tz": null
+},
+"SAP": {
+"lat": 15.4526,
+"lon": -87.9236,
+"name": "Ram\u00f3n Villeda Morales International Airport",
+"tz": null
+},
+"MBJ": {
+"lat": 18.5034,
+"lon": -77.9132,
+"name": "Sangster International Airport",
+"tz": null
+},
+"AGU": {
+"lat": 21.6996,
+"lon": -102.3184,
+"name": "Aguascalientes International Airport",
+"tz": null
+},
+"HUX": {
+"lat": 15.7754,
+"lon": -96.2605,
+"name": "Bah\u00edas de Huatulco International Airport",
+"tz": null
+},
+"CUL": {
+"lat": 24.765,
+"lon": -107.4752,
+"name": "Bachigualato Federal International Airport",
+"tz": null
+},
+"CJS": {
+"lat": 31.6367,
+"lon": -106.4285,
+"name": "Abraham Gonz\u00e1lez International Airport",
+"tz": null
+},
+"CUU": {
+"lat": 28.7026,
+"lon": -105.9638,
+"name": "General Roberto Fierro Villalobos International Airport",
+"tz": null
+},
+"DGO": {
+"lat": 24.1255,
+"lon": -104.5279,
+"name": "General Guadalupe Victoria International Airport",
+"tz": null
+},
+"TPQ": {
+"lat": 21.4198,
+"lon": -104.8425,
+"name": "Amado Nervo National Airport",
+"tz": null
+},
+"GDL": {
+"lat": 20.5233,
+"lon": -103.3101,
+"name": "Guadalajara International Airport",
+"tz": null
+},
+"HMO": {
+"lat": 29.0928,
+"lon": -111.053,
+"name": "General Ignacio L. Pesqueira International Airport",
+"tz": null
+},
+"BJX": {
+"lat": 20.9927,
+"lon": -101.4803,
+"name": "Guanajuato International Airport",
+"tz": null
+},
+"MXL": {
+"lat": 32.6306,
+"lon": -115.2428,
+"name": "General Rodolfo S\u00e1nchez Taboada International Airport",
+"tz": null
+},
+"MLM": {
+"lat": 19.8499,
+"lon": -101.025,
+"name": "General Francisco J. Mujica International Airport",
+"tz": null
+},
+"MEX": {
+"lat": 19.4358,
+"lon": -99.0703,
+"name": "Mexico City Benito Ju\u00e1rez International Airport",
+"tz": null
+},
+"MTY": {
+"lat": 25.7785,
+"lon": -100.107,
+"name": "Monterrey International Airport",
+"tz": null
+},
+"OAX": {
+"lat": 16.9988,
+"lon": -96.7261,
+"name": "Xoxocotl\u00e1n International Airport",
+"tz": null
+},
+"PBC": {
+"lat": 19.1585,
+"lon": -98.3716,
+"name": "Hermanos Serd\u00e1n International Airport",
+"tz": null
+},
+"UPN": {
+"lat": 19.3967,
+"lon": -102.039,
+"name": "Uruapan - Licenciado y General Ignacio Lopez Rayon International Airport",
+"tz": null
+},
+"PVR": {
+"lat": 20.6799,
+"lon": -105.2544,
+"name": "Puerto Vallarta International Airport",
+"tz": null
+},
+"QRO": {
+"lat": 20.6188,
+"lon": -100.1864,
+"name": "Quer\u00e9taro Intercontinental Airport",
+"tz": null
+},
+"SJD": {
+"lat": 23.1519,
+"lon": -109.7207,
+"name": "Los Cabos International Airport",
+"tz": null
+},
+"NLU": {
+"lat": 19.7438,
+"lon": -99.0151,
+"name": "Felipe \u00c1ngeles International Airport",
+"tz": null
+},
+"SLP": {
+"lat": 22.262,
+"lon": -100.9357,
+"name": "Ponciano Arriaga International Airport",
+"tz": null
+},
+"TGZ": {
+"lat": 16.5616,
+"lon": -93.0257,
+"name": "Angel Albino Corzo International Airport",
+"tz": null
+},
+"TIJ": {
+"lat": 32.541,
+"lon": -116.97,
+"name": "General Abelardo L. Rodriguez International Airport",
+"tz": null
+},
+"TLC": {
+"lat": 19.3369,
+"lon": -99.5658,
+"name": "Adolfo L\u00f3pez Mateos International Airport",
+"tz": null
+},
+"CUN": {
+"lat": 21.0408,
+"lon": -86.8735,
+"name": "Canc\u00fan International Airport",
+"tz": null
+},
+"ZCL": {
+"lat": 22.8949,
+"lon": -102.6872,
+"name": "General Leobardo C. Ruiz International Airport",
+"tz": null
+},
+"SJO": {
+"lat": 9.9939,
+"lon": -84.2088,
+"name": "Juan Santamar\u00eda International Airport",
+"tz": null
+},
+"SAL": {
+"lat": 13.4445,
+"lon": -89.0558,
+"name": "El Salvador International Airport Saint \u00d3scar Arnulfo Romero y Gald\u00e1mez",
+"tz": null
+},
+"BOG": {
+"lat": 4.7016,
+"lon": -74.1469,
+"name": "El Dorado International Airport",
+"tz": null
+},
+"CTG": {
+"lat": 10.4424,
+"lon": -75.513,
+"name": "Rafael Nu\u00f1ez International Airport",
+"tz": null
+},
+"MDE": {
+"lat": 6.1645,
+"lon": -75.4231,
+"name": "Jose Maria C\u00f3rdova International Airport",
+"tz": null
+},
+"BQN": {
+"lat": 18.4949,
+"lon": -67.1294,
+"name": "Rafael Hern\u00e1ndez International Airport",
+"tz": null
+},
+"PSE": {
+"lat": 18.0083,
+"lon": -66.563,
+"name": "Mercedita International Airport",
+"tz": null
+},
+"SJU": {
+"lat": 18.4394,
+"lon": -66.0018,
+"name": "Luis Munoz Marin International Airport",
+"tz": null
+},
+"SXM": {
+"lat": 18.041,
+"lon": -63.1089,
+"name": "Princess Juliana International Airport",
+"tz": null
+},
+"PBI": {
+"lat": 26.6832,
+"lon": -80.0956,
+"name": "Palm Beach International Airport",
+"tz": null
+}
+}
