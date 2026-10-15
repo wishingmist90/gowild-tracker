@@ -311,7 +311,7 @@ function flightRows(flights, closed, o, d, day){
     .sort((a,b) => (b.gowild - a.gowild) || a.depart.localeCompare(b.depart));
   if(!fl.length) return `<div class="note">No flights listed by Frontier.</div>`;
   const url = frontierUrl(o, d, day);
-  let h = `<div class="note">Book opens Frontier's search for this route and date. Sign in there, then pick the flight with the same time and flight number.</div>
+  let h = `<div class="note">Book opens Frontier's search for this route and date. Sign in there, click the GoWild tab above the flights, then pick the flight with the same time and flight number.</div>
     <table><tr><th>Depart → Arrive</th><th>Flight</th><th class="num">GoWild</th><th class="num">Regular</th><th></th></tr>`;
   for(const f of fl){
     const via = f.via.length ? `via ${f.via.join(", ")}` : "nonstop";
