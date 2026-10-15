@@ -62,6 +62,7 @@ td.num{text-align:right;font-variant-numeric:tabular-nums}
 tr.closed td{color:var(--gray)}
 .track{font-size:11px;color:var(--muted)}
 a{color:var(--accent)}
+a.book{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;font-weight:600;font-size:12px;padding:4px 9px;border-radius:6px;white-space:nowrap}
 .section{margin-top:16px}
 .section h3{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 4px}
 .legend{position:absolute;bottom:18px;right:18px;z-index:500;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
@@ -304,12 +305,14 @@ function closeDetail(){
   $("#list").style.display = "block";
 }
 
-function flightRows(flights, closed){
+function flightRows(flights, closed, o, d, day){
   const nonstopOnly = $("#nonstop").checked;
   const fl = flights.filter(f => !nonstopOnly || f.stops === 0)
     .sort((a,b) => (b.gowild - a.gowild) || a.depart.localeCompare(b.depart));
   if(!fl.length) return `<div class="note">No flights listed by Frontier.</div>`;
-  let h = `<table><tr><th>Depart → Arrive</th><th>Flight</th><th class="num">GoWild</th><th class="num">Regular</th></tr>`;
+  const url = frontierUrl(o, d, day);
+  let h = `<div class="note">Book opens Frontier's search for this route and date. Sign in there, then pick the flight with the same time and flight number.</div>
+    <table><tr><th>Depart → Arrive</th><th>Flight</th><th class="num">GoWild</th><th class="num">Regular</th><th></th></tr>`;
   for(const f of fl){
     const via = f.via.length ? `via ${f.via.join(", ")}` : "nonstop";
     const arrNext = f.depart.slice(0,10) !== f.arrive.slice(0,10) ? " <span class='badge'>+1</span>" : "";
@@ -319,7 +322,8 @@ function flightRows(flights, closed){
       <td><b>${fmtTime(f.depart)}</b> → ${fmtTime(f.arrive)}${arrNext}<div class="track">${esc(f.duration || "")}</div></td>
       <td>${esc(f.flight_numbers.join(" + "))}<div class="track">${via}</div></td>
       <td class="num">${f.gowild ? `<b style="color:var(--green)">${fmtMoney(f.gowild_price)}</b>` + (f.gowild_seats_text ? `<div><span class="badge seats">${esc(f.gowild_seats_text.replace("!",""))}</span></div>` : "") + (track ? `<div class="track">${track}</div>` : "") : "—"}</td>
-      <td class="num">${fmtMoney(f.standard_price)}</td></tr>`;
+      <td class="num">${fmtMoney(f.standard_price)}</td>
+      <td>${f.gowild ? `<a class="book" href="${url}" target="_blank" rel="noopener" title="Pick ${esc(f.flight_numbers.join(" + "))} departing ${fmtTime(f.depart)} on Frontier">Book ↗</a>` : ""}</td></tr>`;
   }
   h += "</table>";
   if(closed && closed.length){
@@ -338,7 +342,7 @@ async function showDetail(code){
     <div class="note">${fmtDay(day)}${r ? " · checked " + fmtStamp(r.checked_at) : ""} · <a href="${frontierUrl(o, code, day)}" target="_blank" rel="noopener">Open on Frontier ↗</a></div>`;
   if(!r) h += `<div class="section note">Not checked yet. <button class="ghost" onclick="scanOne('${o}','${code}','${day}')">Check this route</button></div>`;
   else if(r.status === "no_service") h += `<div class="section note">Frontier has no flights on this route on ${fmtDay(day)}.</div>`;
-  else h += `<div class="section">${flightRows(r.flights, r.closed_since)}</div>`;
+  else h += `<div class="section">${flightRows(r.flights, r.closed_since, o, code, day)}</div>`;
   h += `<div class="section"><h3>Return ${esc(st.city || code)} → ${esc(state.stations[o].city)}</h3>
     <div class="row" style="flex-wrap:wrap">${nextDays.map(d => `<button class="ghost" onclick="loadReturn('${code}','${o}','${d.date}', true)">${fmtDay(d.date)}</button>`).join("")}</div>
     <div id="ret" class="section"></div></div>
@@ -361,7 +365,7 @@ async function loadReturn(from, to, day, scanIfMissing){
   }
   if(!r){ box.innerHTML = `<div class="note">Couldn't check that route.</div>`; return; }
   box.innerHTML = `<div class="note">${fmtDay(day)} · checked ${fmtStamp(r.checked_at)} · <a href="#" onclick="event.preventDefault();rescanReturn('${from}','${to}','${day}')">re-check</a> · <a href="${frontierUrl(from,to,day)}" target="_blank" rel="noopener">Open on Frontier ↗</a></div>` +
-    (r.status === "no_service" ? `<div class="note">No flights that day.</div>` : flightRows(r.flights));
+    (r.status === "no_service" ? `<div class="note">No flights that day.</div>` : flightRows(r.flights, null, from, to, day));
 }
 async function rescanReturn(from, to, day){
   $("#ret").innerHTML = `<div class="note">Checking…</div>`;
